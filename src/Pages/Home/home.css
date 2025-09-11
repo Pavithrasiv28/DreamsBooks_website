@@ -1,0 +1,78 @@
+.Hero-section{
+    background-image: url('public/hero-bg.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    /* background-attachment: fixed; */
+}
+.book_animate{
+    animation: float 3s ease-in-out infinite;
+}
+
+.discount{
+  background-image: url('public/cta-banner.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+.Top_Categories{
+  background-image: url("public/top-categories-bg.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  object-fit: cover;
+  /* background-attachment: fixed;   */
+}
+
+.rating_container{
+  background-image: url('public/ratting-bg.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.custom-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(100%);
+  background-color: rgba(255, 123, 107, 0.8);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  z-index: 10;
+}
+
+.custom-arrow.show {
+  opacity: 1;
+}
+
+.custom-arrow.left {
+  left: -30px;
+}
+
+.custom-arrow.right {
+  right: -30px;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-17px); /* move up slightly */
+  }
+}
+
+@media (max-width: 1115px) {
+  .book_animate {
+    display: none;
+  }
+}

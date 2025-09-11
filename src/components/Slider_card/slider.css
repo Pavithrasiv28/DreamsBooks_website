@@ -1,0 +1,8 @@
+
+.card .scale_img {
+  transition: transform 0.4s ease-in-out;
+}
+
+.card:hover .scale_img{
+        transform: scale(1.1)
+}
