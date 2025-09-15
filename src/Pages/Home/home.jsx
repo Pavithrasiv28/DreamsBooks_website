@@ -48,7 +48,8 @@ import paypal from '../../../public/paypal.png'
 import visa from '../../../public/visa.png'
 import card_ from '../../../public/card.png'
 import stripe from '../../../public/stripe.png'
-import { motion } from 'framer-motion';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import { motion, AnimatePresence} from 'framer-motion';
 
 
 const PrevArrow = ({ sliderRef, hover }) => {
@@ -75,22 +76,21 @@ const NextArrow = ({ sliderRef, hover }) => {
 
 
 function HomeComponent() {
-    const [isFixed, setIsFixed] = useState(false);
+    // const [isFixed, setIsFixed] = useState(false);
+    // const [toparrow, setToparrow] = useState(false);
+    const [ShowScrollBtn, setShowScrollBtn] = useState(false);
     const sliderRef = useRef(null);
     const [hover, setHover] = useState(false);
 
-    useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 300) {  
-        setIsFixed(true);
-      } else {
-        setIsFixed(false);
-      }
-    };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  useEffect(() => {
+  const handleScroll = () => {
+    setShowScrollBtn(window.scrollY > 300);
+  };
+
+  window.addEventListener("scroll", handleScroll);
+  return () => window.removeEventListener("scroll", handleScroll);
+}, []);
 
 
   const card =[
@@ -294,7 +294,7 @@ const cardVariants = {
   return (
     <>
      <div className='Home_container h-[100dvh] w-full'>
-        <div className={`navigation h-[12dvh] w-full bg-white p-1 box-border items-center flex justify-around shadow-[0_4px_15px_-1px_rgba(0,0,0,0.1)] transition-transform duration-1000 ease-in-out ${isFixed ? "fixed z-50 top-0 opacity-100 translate-y" : "translate-y-0"}`}>
+        <div className={`navigation h-[12dvh] w-full bg-white p-1 box-border items-center flex justify-around shadow-[0_4px_15px_-1px_rgba(0,0,0,0.1)] transition-transform duration-1000 ease-in-out ${ShowScrollBtn ? "fixed z-50 top-0 opacity-100 translate-y" : "translate-y-0"}`}>
             <div className='logo h-full w-48'>
               <img src={DreambooksLogo} height='130px' width='150px'/>
             </div>
@@ -328,33 +328,56 @@ const cardVariants = {
 
                 <motion.p initial={{ opacity: 0, y: 70 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 1, ease: 'easeOut' }} className="mt-4 max-w-2xl text-white">Sed ac arcu sed felis vulputate molestie. Nullam at urna in velit finibus vestibulum euismod A Urna. Sed quis aliquam leo. Duis iaculis lorem mauris, et convallis du</motion.p>
 
-                <motion.div initial={{ opacity: 0, y: 70 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 1, ease: 'easeOut' }} className="max-w-[350px] h-fit p-[min(10vw, 2%)] flex flex-wrap justify-between mt-10">
-                    <button className="h-fit py-3 px-5 bg-white rounded-4xl font-bold m-1">
-                      Shop Now <ArrowRightAltOutlinedIcon fontSize="medium"/></button>
-                    <button className="h-fit py-3 px-5 bg-[#FF7B6B] text-white rounded-4xl font-bold m-1">
-                      View All Books <ArrowForwardOutlinedIcon fontSize="medium"/></button>
+                <motion.div
+                initial={{ opacity: 0, y: 70 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 1, ease: "easeOut" }}
+                className="w-[370px] h-fit p-[min(10vw,2%)] flex flex-wrap justify-between mt-10">
+                    <button className="relative overflow-hidden h-fit py-3 px-5 bg-white rounded-4xl font-bold m-1 group hover:text-white">
+                      <span className="relative z-10 flex items-center">Shop Now <ArrowRightAltOutlinedIcon fontSize="medium" /></span>
+                      <span className="absolute left-0 bottom-0 w-0 h-full bg-[#FF7B6B] transition-all duration-300 group-hover:w-full z-0"></span>
+                   </button>
+
+                    <button className="relative overflow-hidden h-fit py-3 px-5 bg-[#FF7B6B] text-white rounded-4xl font-bold m-1 group hover:text-black transition-all duration-700 ">
+                      <span className="relative z-10 flex items-center">View All Books <ArrowForwardOutlinedIcon fontSize="medium" /></span>
+                      <span className="absolute left-0 bottom-0 w-0 h-full bg-white transition-all duration-700 group-hover:w-full z-0"></span>
+                   </button>
                 </motion.div>
+
                 <div className='book_animate relative top-50'>
                   <img src={hero_book} alt="book_image"/>
                 </div>
-             </div>
+                </div>
 
              {/* Image */}
             <div className="flex justify-center transform relative right-20">
-               <img
-    src={heroImg}
-    alt="Hero"
-    className="
-      h-[830px] w-[400px] scale-180 
-      lg:h-[830px] lg:w-[400px] lg:scale-180
-      md:h-[650px] md:w-[320px] md:scale-180
-      sm:h-[450px] sm:w-[220px] sm:scale-180
-      object-contain 
-      relative transform translate-y-10
-      transition-all duration-500"/>
+               <img src={heroImg} alt="Hero"
+                className=" h-[830px] w-[400px] scale-180 
+                lg:h-[830px] lg:w-[400px] lg:scale-180
+                md:h-[650px] md:w-[320px] md:scale-180
+                sm:h-[450px] sm:w-[220px] sm:scale-180
+                object-contain 
+                relative transform translate-y-10
+                transition-all duration-500"/>
             </div>
-         </div>
+            </div>
         </section>
+
+        <AnimatePresence>
+        {ShowScrollBtn && (
+        <motion.div
+        initial={{ opacity: 0, y: 70 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 70 }}
+        transition={{ duration: 0.8 }}
+        className='w-14 h-14 rounded-2xl bg-[#FF7B6B] flex justify-center items-center left-315 top-135 fixed'
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        >
+        <KeyboardArrowUpIcon fontSize='large' sx={{color:'white', fontSize:35}}/>
+        </motion.div>
+        )}
+        </AnimatePresence>
 
         
         {/* Cards Section */}
@@ -374,14 +397,15 @@ const cardVariants = {
            </motion.div>
         </section>
 
-        {/* Carousal Section */}
+        {/* Featured Books Section*/}
         <section className='carousal w-full h-fit p-10'>
           <div className='w-[80dvw] h-fit m-auto'>
             <div className='Featured flex justify-between flex-wrap'>
                 <motion.h1 initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 1, ease: 'easeOut' }}  className='text-[clamp(1.6rem,3.2vw,3rem)] font-bold'>Featured Books</motion.h1>
-                <button className="h-fit py-3 px-5 bg-[#FF7B6B] text-white rounded-4xl font-bold m-1">
-                 Explore More <ArrowForwardOutlinedIcon fontSize="medium"/>
-                </button>
+                <button className="relative overflow-hidden h-fit py-3 px-5 bg-[#FF7B6B] text-white rounded-4xl font-bold m-1 group">
+                  <span className="relative z-10 flex items-center">Explore More <ArrowForwardOutlinedIcon fontSize="medium" /></span>
+                  <span className="absolute left-0 bottom-0 w-0 h-full bg-black transition-all duration-400 ease-in group-hover:w-full z-0"></span>
+               </button>
             </div>
             <div className='lg:mt-10 overflow-hidden'>
               <Slider {...settings}>
@@ -394,6 +418,7 @@ const cardVariants = {
             </div>
           </div>
         </section>
+
 
         {/* Top categories Section*/}
         <section className='Top_Categories w-full h-150 flex justify-center items-center flex-col'>
@@ -418,9 +443,11 @@ const cardVariants = {
           <div className='w-[80dvw] h-fit m-auto'>
             <motion.div variants={containerVariants} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} className='Featured flex justify-between flex-wrap'>
                 <motion.h1 variants={cardVariants} transition={{ duration: 1 }} className='text-[clamp(1.6rem,3.2vw,3rem)] font-bold'>Readit Top Books</motion.h1>
-                <motion.button variants={cardVariants} transition={{ duration: 1 }} className="h-fit py-3 px-5 bg-[#FF7B6B] text-white rounded-4xl font-bold m-1">
-                 Explore More <ArrowForwardOutlinedIcon fontSize="medium"/>
+                <motion.button variants={cardVariants} transition={{ duration: 1 }} className="relative overflow-hidden h-fit py-3 px-5 bg-[#FF7B6B] text-white rounded-4xl font-bold m-1 group">
+                  <span className="relative z-10 flex items-center">Explore More <ArrowForwardOutlinedIcon fontSize="medium" /></span>
+                  <span className="absolute left-0 bottom-0 w-0 h-full bg-black transition-all duration-400 ease-in group-hover:w-full z-0"></span>
                 </motion.button>
+
             </motion.div>
             <div className='lg:mt-10 flex flex-wrap justify-evenly'>
               {/* <Slider {...settings}> */}
@@ -454,9 +481,12 @@ const cardVariants = {
           Discount In All <br /> Kind Of Super Selling</motion.h2>
 
         {/* Button */}
-        <motion.button variants={cardVariants} transition={{ duration: 1 }} className="flex items-center gap-2 mt-6 py-3 px-5 bg-white text-black rounded-full font-semibold">
-          Shop Now <ArrowForwardOutlinedIcon fontSize="medium" />
+        <motion.button variants={cardVariants} transition={{ duration: 1 }}className="relative overflow-hidden flex items-center gap-2 mt-6 py-3 px-5 bg-white text-black rounded-full font-semibold group hover:text-white">
+          <span className="relative z-10 flex items-center gap-2">Shop Now <ArrowForwardOutlinedIcon fontSize="medium" /></span>
+          {/* Expanding layer */}
+          <span className="absolute left-0 bottom-0 w-0 h-full bg-black transition-all duration-500 ease-in-out group-hover:w-full z-0"></span>
         </motion.button>
+
         </motion.div>
 
         {/* Right book */}
@@ -491,8 +521,9 @@ const cardVariants = {
            <div className='w-[80dvw] h-fit m-auto'>
             <motion.div variants={containerVariants} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} className='Featured flex justify-between flex-wrap'>
                 <motion.h1 variants={cardVariants} transition={{ duration: 1 }} className='text-[clamp(1.6rem,3.2vw,3rem)] font-bold'>Top Selling Books</motion.h1>
-                <motion.button variants={cardVariants} transition={{ duration: 1 }} className="h-fit py-3 px-5 bg-[#FF7B6B] text-white rounded-4xl font-bold m-1">
-                 Explore More <ArrowForwardOutlinedIcon fontSize="medium"/>
+                <motion.button variants={cardVariants} transition={{ duration: 1 }} className="relative overflow-hidden h-fit py-3 px-5 bg-[#FF7B6B] text-white rounded-4xl font-bold m-1 group">
+                  <span className="relative z-10 flex items-center">Explore More <ArrowForwardOutlinedIcon fontSize="medium" /></span>
+                  <span className="absolute left-0 bottom-0 w-0 h-full bg-black transition-all duration-400 ease-in group-hover:w-full z-0"></span>
                 </motion.button>
             </motion.div>
             <div className='lg:mt-10 overflow-hidden'>
@@ -599,7 +630,7 @@ const cardVariants = {
             <p className='text-[#797979] text-[18px] w-70'>Our conversation is just getting started</p>
             <div className='mt-3'>
               <input placeholder='Enter your Email' className='h-15 w-45 border-1 border-gray-200 rounded-md text-sm text-center shadow-sm'/>
-              <button className='h-15 w-25 bg-[#FF7B6B] rounded-sm text-white'>Subscribe</button>
+              <button className='subs_btn h-15 w-25 bg-[#FF7B6B] rounded-sm text-white'>Subscribe</button>
             </div>
             <div className="mt-7">
             <h4 className="mb-4 text-lg font-medium">Follow Us On</h4>

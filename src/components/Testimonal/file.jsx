@@ -29,7 +29,7 @@ const TestimonialCard = ({ testimonial, showBorder }) => {
         showBorder ? "border-t-4 border-red-500" : ""
       }`}
     >
-      <p className="text-gray-600 mb-4 text-md font-semibold">{testimonial.text}</p>
+      <p className="text-gray-600 mb-4 text-md font-[600]">{testimonial.text}</p>
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-4">
           <img
